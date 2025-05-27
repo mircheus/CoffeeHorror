@@ -1,6 +1,7 @@
 using System;
 using Game.Prefabs.Interactables;
 using Game.Scripts.Player;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Game.Scripts.Interactables
@@ -8,13 +9,17 @@ namespace Game.Scripts.Interactables
     public class CoffeeMachine : MonoBehaviour, IInteractable
     {
         [SerializeField] private Transform cupPlace;
+        [SerializeField] private Transform capsulePlace;
         
-        private bool _isPlaceEmpty;
+        private bool _isCupPlaceEmpty;
+        private bool _isCapsulePlaceEmpty;
         private Cup _currentCup;
+        private CoffeeCapsule _currentCapsule;
 
         private void OnEnable()
         {
-            _isPlaceEmpty = true;
+            _isCupPlaceEmpty = true;
+            _isCapsulePlaceEmpty = true;
         }
 
         public void Interact(PlayerInteraction interactor)
@@ -24,13 +29,22 @@ namespace Game.Scripts.Interactables
                 Debug.LogWarning("PlayerInteraction is null, cannot interact with CoffeeMachine.");
                 return;
             }
+
+            if (interactor.IsHolding && interactor.HeldObject.TryGetComponent(out CoffeeCapsule capsule))
+            {
+                interactor.ReleaseHeldObject();
+                _currentCapsule = capsule;
+                _currentCapsule.Drop();
+                _currentCapsule.SetKinematicTrue();
+                PlaceOnPosition(_currentCapsule);
+            }
             
-            if (interactor.HeldObject.TryGetComponent(out Cup cup))
+            if (interactor.IsHolding && interactor.HeldObject.TryGetComponent(out Cup cup))
             {
                 interactor.ReleaseHeldObject();
                 _currentCup = cup;
                 _currentCup.Drop();
-                _currentCup.FixPosition();
+                _currentCup.SetKinematicTrue();
                 PlaceOnPosition(_currentCup);
                 _currentCup.Grabbed += OnGrabbed;
             }
@@ -38,12 +52,22 @@ namespace Game.Scripts.Interactables
 
         public bool CanInteract(PlayerInteraction interactor)
         {
-            return _isPlaceEmpty && interactor.IsHolding;
+            if(interactor.HeldObject.TryGetComponent(out CoffeeCapsule capsule))
+            {
+                return _isCapsulePlaceEmpty && interactor.IsHolding;
+            }
+            
+            if (interactor.HeldObject.TryGetComponent(out Cup cup))
+            {
+                return _isCupPlaceEmpty && interactor.IsHolding;
+            }
+            
+            return false;
         }
 
         private void OnGrabbed()
         {
-            _isPlaceEmpty = true;
+            _isCupPlaceEmpty = true;
             _currentCup.Grabbed -= OnGrabbed;
             _currentCup = null;
         }
@@ -54,7 +78,16 @@ namespace Game.Scripts.Interactables
             (cupTransform = cup.transform).SetParent(transform);
             cupTransform.position = cupPlace.position;
             cupTransform.rotation = Quaternion.identity;
-            _isPlaceEmpty = false;
+            _isCupPlaceEmpty = false;
+        }
+        
+        private void PlaceOnPosition(CoffeeCapsule capsule)
+        {
+            Transform capsuleTransform;
+            (capsuleTransform = capsule.transform).SetParent(capsulePlace.transform);
+            capsuleTransform.position = capsulePlace.position;
+            capsuleTransform.rotation = capsulePlace.rotation;
+            _isCapsulePlaceEmpty = false;
         }
     }
 }
