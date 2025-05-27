@@ -10,6 +10,7 @@ namespace Game.Scripts.Interactables
     {
         [SerializeField] private Transform cupPlace;
         [SerializeField] private Transform capsulePlace;
+        [SerializeField] private PrepareButton prepareButton;
         
         private bool _isCupPlaceEmpty;
         private bool _isCapsulePlaceEmpty;
@@ -20,6 +21,12 @@ namespace Game.Scripts.Interactables
         {
             _isCupPlaceEmpty = true;
             _isCapsulePlaceEmpty = true;
+            prepareButton.StartPrepare += OnPrepareButtonPressed;
+        }
+
+        private void OnDisable()
+        {
+            prepareButton.StartPrepare -= OnPrepareButtonPressed;
         }
 
         public void Interact(PlayerInteraction interactor)
@@ -83,7 +90,7 @@ namespace Game.Scripts.Interactables
             cupTransform.rotation = Quaternion.identity;
             _isCupPlaceEmpty = false;
         }
-        
+
         private void PlaceOnPosition(CoffeeCapsule capsule)
         {
             Transform capsuleTransform;
@@ -91,6 +98,11 @@ namespace Game.Scripts.Interactables
             capsuleTransform.position = capsulePlace.position;
             capsuleTransform.rotation = capsulePlace.rotation;
             _isCapsulePlaceEmpty = false;
+        }
+
+        private void OnPrepareButtonPressed()
+        {
+            Debug.Log("PrepareButton pressed. Starting coffee preparation...");
         }
     }
 }
