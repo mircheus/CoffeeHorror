@@ -2,50 +2,69 @@
 using Game.Prefabs.Interactables;
 using Game.Scripts.Player;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Game.Scripts.Interactables
 {
     public class Cup : MonoBehaviour, IInteractable, IDroppable
     {
+        [SerializeField] protected CoffeeIngredientType ingredientType = CoffeeIngredientType.Cup;
+        
         private Rigidbody _rigidbody;
+        private bool _isHeld;
+        private int _originalLayer;
+        
+        public CoffeeIngredientType IngredientType => ingredientType;
+        
+        public event UnityAction Grabbed;
 
         private void OnEnable()
         {
             _rigidbody = GetComponent<Rigidbody>();
-            _rigidbody.constraints = RigidbodyConstraints.FreezeRotationX;
-            
+            _originalLayer = gameObject.layer;
+
             if (_rigidbody == null)
             {
-                Debug.LogError("Cup requires a Rigidbody component.");
+                Debug.LogError($"{gameObject.name} requires a Rigidbody component.");
             }
         }
 
-        public void Interact(PlayerInteraction playerInteraction)
+        public void Interact(PlayerInteraction interactor)
         {
-            if (playerInteraction == null)
+            if (interactor == null)
             {
                 Debug.LogWarning("PlayerInteraction is null, cannot interact with Cup.");
                 return;
             }
 
-            _rigidbody.useGravity = false;
-            _rigidbody.detectCollisions = true;
-            _rigidbody.angularVelocity = Vector3.zero;
-            _rigidbody.linearVelocity = Vector3.zero;
-            playerInteraction.GetCup(this);
+            _isHeld = true;
+            _rigidbody.isKinematic = true;
+            gameObject.layer = LayerMask.NameToLayer(Constants.HeldObjectLayer);
+            Grabbed?.Invoke();
+            interactor.SetHeldObject(gameObject);
         }
 
-        public bool CanInteract()
+        public bool CanInteract(PlayerInteraction interactor)
         {
-            return true;
+            if (interactor.IsHolding == false)
+            {
+                return true;
+            }
+
+            return false;
         }
-        
-        public void Drop(PlayerInteraction playerInteraction)
+
+        public void Drop()
         {
-            playerInteraction.DropCup();
-            _rigidbody.useGravity = true;
-            transform.rotation = new Quaternion(0, playerInteraction.transform.rotation.y, 0, 1);
-            // throw new NotImplementedException();
+            _isHeld = false;
+            gameObject.layer = _originalLayer;
+            transform.SetParent(null);
+            _rigidbody.isKinematic = false;
+        }
+
+        public void FixPosition()
+        {
+            _rigidbody.isKinematic = true;
         }
     }
 }
