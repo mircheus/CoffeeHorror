@@ -808,7 +808,7 @@ GameObject:
   - component: {fileID: 8174663981669599737}
   - component: {fileID: 3477638958112176895}
   - component: {fileID: 3042647139806234859}
-  m_Layer: 1
+  m_Layer: 3
   m_Name: Gold Player Controller
   m_TagString: Player
   m_Icon: {fileID: 3936346786652291628, guid: 0000000000000000d000000000000000, type: 0}

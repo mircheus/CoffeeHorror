@@ -8,9 +8,13 @@ namespace Game.Scripts.Interactables
 {
     public class Cup : MonoBehaviour, IInteractable, IDroppable
     {
+        [SerializeField] protected CoffeeIngredientType ingredientType = CoffeeIngredientType.Cup;
+        
         private Rigidbody _rigidbody;
         private bool _isHeld;
         private int _originalLayer;
+        
+        public CoffeeIngredientType IngredientType => ingredientType;
         
         public event UnityAction Grabbed;
 
@@ -21,7 +25,7 @@ namespace Game.Scripts.Interactables
 
             if (_rigidbody == null)
             {
-                Debug.LogError("Cup requires a Rigidbody component.");
+                Debug.LogError($"{gameObject.name} requires a Rigidbody component.");
             }
         }
 
