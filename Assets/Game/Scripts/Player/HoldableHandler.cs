@@ -10,6 +10,7 @@ namespace Game.Scripts.Player
         private GameObject _heldObject;
 
         public bool IsHolding => _heldObject != null;
+        public GameObject HeldObject => _heldObject;
 
         public HoldableHandler(Transform holdPoint)
         {

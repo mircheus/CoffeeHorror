@@ -11,20 +11,24 @@ namespace Game.Scripts.Player
     {
         [SerializeField] private InputActionReference interactAction;
         [SerializeField] private float rayDistance = 3f;
+        [SerializeField] private LayerMask interactLayer = ~0; 
         
         private HoldableHandler _holdableHandler;
         private Player _player;
 
+        public bool IsHolding => _holdableHandler.IsHolding;
+        public GameObject HeldObject => _holdableHandler.HeldObject;
+        
         private void OnEnable()
         {
             interactAction.action.Enable();
-            interactAction.action.performed += Interact;
+            interactAction.action.performed += TryInteract;
         }
 
         private void OnDisable()
         {
             interactAction.action.Disable();
-            interactAction.action.performed -= Interact;
+            interactAction.action.performed -= TryInteract;
         }
 
         public void Init(Player player)
@@ -44,26 +48,67 @@ namespace Game.Scripts.Player
             _holdableHandler.SetHeldObject(obj);
         }
         
-        private void Interact(InputAction.CallbackContext context)
+        public void ReleaseHeldObject()
         {
             if (_holdableHandler.IsHolding == false)
             {
-                RaycastHit hit;
+                Debug.LogWarning("Not holding any object to release.");
+                return;
+            }
+
+            _holdableHandler.DropHeldObject();
+        }
+        
+        private void TryInteract(InputAction.CallbackContext context)
+        {
+            RaycastHit hit;
+                                                                                                                                            
+            if (Physics.Raycast(_player.CameraHeadPosition, _player.CameraHeadForward, out hit, rayDistance, interactLayer))
+            {
+                Debug.Log("hit.info: " + hit.collider.gameObject.name);
+                IInteractable interactable = hit.collider.GetComponent<IInteractable>();
                 
-                if (Physics.Raycast(_player.CameraHeadPosition, _player.CameraHeadForward, out hit, rayDistance))
+                if (interactable != null && interactable.CanInteract())
                 {
-                    IInteractable interactable = hit.collider.GetComponent<IInteractable>();
-                    
-                    if (interactable != null && interactable.CanInteract())
-                    {
-                        interactable.Interact(this);
-                    }
-                }  
+                    interactable.Interact(this);
+                }
             }
             else
             {
                 _holdableHandler.DropHeldObject();
             }
+            // if (_holdableHandler.IsHolding == false)
+            // {
+            //     RaycastHit hit;
+            //                                                                                                                                     
+            //     if (Physics.Raycast(_player.CameraHeadPosition, _player.CameraHeadForward, out hit, rayDistance, interactLayer))
+            //     {
+            //         Debug.Log("hit.info: " + hit.collider.gameObject.name);
+            //         IInteractable interactable = hit.collider.GetComponent<IInteractable>();
+            //         
+            //         if (interactable != null && interactable.CanInteract())
+            //         {
+            //             interactable.Interact(this);
+            //         }
+            //     }  
+            // }
+            // else
+            // {
+            //     // _holdableHandler.DropHeldObject();
+            //     RaycastHit hit;
+            //     
+            //     if (Physics.Raycast(_player.CameraHeadPosition, _player.CameraHeadForward, out hit, rayDistance, interactLayer))
+            //     {
+            //         Debug.Log("hit.info: " + hit.collider.gameObject.name);
+            //         IInteractable interactable = hit.collider.GetComponent<IInteractable>();
+            //         
+            //         if (interactable != null && interactable.CanInteract())
+            //         {
+            //             interactable.Interact(this);
+            //         }
+            //     }  
+            // }
+            
         }
     }
 }

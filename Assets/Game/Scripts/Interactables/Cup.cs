@@ -9,12 +9,15 @@ namespace Game.Scripts.Interactables
     {
         private Rigidbody _rigidbody;
         private bool _isHeld;
+        private int _originalLayer;
+        
+        public event Action Grabbed;
 
         private void OnEnable()
         {
             _rigidbody = GetComponent<Rigidbody>();
-            _rigidbody.constraints = RigidbodyConstraints.FreezeRotationX;
-            
+            _originalLayer = gameObject.layer;
+
             if (_rigidbody == null)
             {
                 Debug.LogError("Cup requires a Rigidbody component.");
@@ -31,6 +34,8 @@ namespace Game.Scripts.Interactables
 
             _isHeld = true;
             _rigidbody.isKinematic = true;
+            gameObject.layer = LayerMask.NameToLayer(Constants.HeldObjectLayer);
+            Grabbed?.Invoke();
             interactor.SetHeldObject(gameObject);
         }
 
@@ -42,8 +47,14 @@ namespace Game.Scripts.Interactables
         public void Drop()
         {
             _isHeld = false;
+            gameObject.layer = _originalLayer;
             transform.SetParent(null);
             _rigidbody.isKinematic = false;
+        }
+
+        public void FixPosition()
+        {
+            _rigidbody.isKinematic = true;
         }
     }
 }
