@@ -1,24 +1,41 @@
+using Game.Prefabs.Interactables;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerInteraction : MonoBehaviour
+namespace Game.Scripts.Player
 {
-    [SerializeField] private InputActionReference interactAction;
-    
-    private void OnEnable()
+    public class PlayerInteraction : MonoBehaviour
     {
-        interactAction.action.Enable();
-        interactAction.action.performed += Interact;
-    }
+        [SerializeField] private InputActionReference interactAction;
     
-    private void OnDisable()
-    {
-        interactAction.action.Disable();
-        interactAction.action.performed -= Interact;
-    }
+        private void OnEnable()
+        {
+            interactAction.action.Enable();
+            interactAction.action.performed += Interact;
+        }
+    
+        private void OnDisable()
+        {
+            interactAction.action.Disable();
+            interactAction.action.performed -= Interact;
+        }
 
-    private void Interact(InputAction.CallbackContext context)
-    {
-        Debug.Log("Interacted");
+        private void Interact(InputAction.CallbackContext context)
+        {
+            if (context.performed)
+            {
+                RaycastHit hit;
+                
+                if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, 3f))
+                {
+                    IInteractable interactable = hit.collider.GetComponent<IInteractable>();
+                    
+                    if (interactable != null && interactable.CanInteract())
+                    {
+                        interactable.Interact();
+                    }
+                }
+            }
+        }
     }
 }
