@@ -921,7 +921,7 @@ MonoBehaviour:
       forwardSpeed: 3
       sidewaysSpeed: 2.5
       backwardsSpeed: 2
-    canRun: 1
+    canRun: 0
     runToggleMode: 0
     runSpeeds:
       forwardSpeed: 7
@@ -937,7 +937,7 @@ MonoBehaviour:
       regenRateStill: 0.8
       regenRateMoving: 0.5
       regenWait: 1
-    canJump: 1
+    canJump: 0
     jumpingRequiresStamina: 0
     jumpStaminaRequire: 1
     jumpStaminaCost: 1
@@ -946,7 +946,7 @@ MonoBehaviour:
     airJumpTime: 0.1
     airJumpsAmount: 0
     allowAirJumpDirectionChange: 1
-    canCrouch: 1
+    canCrouch: 0
     crouchToggleMode: 0
     crouchSpeeds:
       forwardSpeed: 2
@@ -1017,7 +1017,7 @@ MonoBehaviour:
     rayHeight: 0.3
     rayLength: 0.4
     movingPlatforms:
-      enabled: 1
+      enabled: 0
       movePosition: 1
       moveRotation: 1
       maxAngle: 45
@@ -1027,7 +1027,7 @@ MonoBehaviour:
     input_Crouch: Crouch
   headBob:
     bobClass:
-      enableBob: 1
+      enableBob: 0
       unscaledTime: 0
       bobFrequency: 1.5
       bobHeight: 0.3
@@ -1145,7 +1145,7 @@ Transform:
   m_GameObject: {fileID: 1444503306}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8.694198, y: 8.446069, z: -5.143735}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
