@@ -744,6 +744,7 @@ GameObject:
   - component: {fileID: 1444503309}
   - component: {fileID: 1444503308}
   - component: {fileID: 1444503307}
+  - component: {fileID: 1444503311}
   m_Layer: 1
   m_Name: Gold Player Controller
   m_TagString: Player
@@ -778,8 +779,6 @@ MonoBehaviour:
     action: {fileID: -2099379676528639254, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   - actionName: Crouch
     action: {fileID: 7040659881675835329, guid: 052faaac586de48259a63d0c4782560b, type: 3}
-  - actionName: Interact
-    action: {fileID: 1781555164194001046, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   autoEnableInput: 1
   autoDisableInput: 1
 --- !u!114 &1444503308
@@ -1155,6 +1154,19 @@ Transform:
   - {fileID: 284714546}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1444503311
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1444503306}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0daf9a67fd4be3c49b45df027015d2f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactAction: {fileID: -687298319886299705, guid: 052faaac586de48259a63d0c4782560b, type: 3}
 --- !u!1 &1757714339
 GameObject:
   m_ObjectHideFlags: 0
