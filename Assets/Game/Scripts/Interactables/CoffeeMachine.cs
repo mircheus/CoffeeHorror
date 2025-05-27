@@ -52,14 +52,17 @@ namespace Game.Scripts.Interactables
 
         public bool CanInteract(PlayerInteraction interactor)
         {
-            if(interactor.HeldObject.TryGetComponent(out CoffeeCapsule capsule))
+            if (interactor.IsHolding)
             {
-                return _isCapsulePlaceEmpty && interactor.IsHolding;
-            }
+                if(interactor.HeldObject.TryGetComponent(out CoffeeCapsule capsule))
+                {
+                    return _isCapsulePlaceEmpty && interactor.IsHolding;
+                }
             
-            if (interactor.HeldObject.TryGetComponent(out Cup cup))
-            {
-                return _isCupPlaceEmpty && interactor.IsHolding;
+                if (interactor.HeldObject.TryGetComponent(out Cup cup))
+                {
+                    return _isCupPlaceEmpty && interactor.IsHolding;
+                }
             }
             
             return false;
