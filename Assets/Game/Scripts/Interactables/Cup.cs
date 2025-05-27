@@ -39,9 +39,14 @@ namespace Game.Scripts.Interactables
             interactor.SetHeldObject(gameObject);
         }
 
-        public bool CanInteract()
+        public bool CanInteract(PlayerInteraction interactor)
         {
-            return true;
+            if (interactor.IsHolding == false)
+            {
+                return true;
+            }
+
+            return false;
         }
 
         public void Drop()

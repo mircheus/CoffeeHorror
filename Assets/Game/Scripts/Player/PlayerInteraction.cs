@@ -65,10 +65,9 @@ namespace Game.Scripts.Player
                                                                                                                                             
             if (Physics.Raycast(_player.CameraHeadPosition, _player.CameraHeadForward, out hit, rayDistance, interactLayer))
             {
-                Debug.Log("hit.info: " + hit.collider.gameObject.name);
                 IInteractable interactable = hit.collider.GetComponent<IInteractable>();
-                
-                if (interactable != null && interactable.CanInteract())
+
+                if (interactable != null && interactable.CanInteract(this))
                 {
                     interactable.Interact(this);
                 }
@@ -77,38 +76,6 @@ namespace Game.Scripts.Player
             {
                 _holdableHandler.DropHeldObject();
             }
-            // if (_holdableHandler.IsHolding == false)
-            // {
-            //     RaycastHit hit;
-            //                                                                                                                                     
-            //     if (Physics.Raycast(_player.CameraHeadPosition, _player.CameraHeadForward, out hit, rayDistance, interactLayer))
-            //     {
-            //         Debug.Log("hit.info: " + hit.collider.gameObject.name);
-            //         IInteractable interactable = hit.collider.GetComponent<IInteractable>();
-            //         
-            //         if (interactable != null && interactable.CanInteract())
-            //         {
-            //             interactable.Interact(this);
-            //         }
-            //     }  
-            // }
-            // else
-            // {
-            //     // _holdableHandler.DropHeldObject();
-            //     RaycastHit hit;
-            //     
-            //     if (Physics.Raycast(_player.CameraHeadPosition, _player.CameraHeadForward, out hit, rayDistance, interactLayer))
-            //     {
-            //         Debug.Log("hit.info: " + hit.collider.gameObject.name);
-            //         IInteractable interactable = hit.collider.GetComponent<IInteractable>();
-            //         
-            //         if (interactable != null && interactable.CanInteract())
-            //         {
-            //             interactable.Interact(this);
-            //         }
-            //     }  
-            // }
-            
         }
     }
 }

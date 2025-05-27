@@ -13,7 +13,7 @@ namespace Game.Prefabs.Interactables
         /// Method to check if the interactable can be interacted with.
         /// </summary>
         /// <returns>True if it can be interacted with, otherwise false.</returns>
-        bool CanInteract();
+        bool CanInteract(PlayerInteraction interactor);
     }
 }
 

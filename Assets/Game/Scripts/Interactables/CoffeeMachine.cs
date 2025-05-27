@@ -1,3 +1,4 @@
+using System;
 using Game.Prefabs.Interactables;
 using Game.Scripts.Player;
 using UnityEngine;
@@ -8,8 +9,13 @@ namespace Game.Scripts.Interactables
     {
         [SerializeField] private Transform cupPlace;
         
-        private bool _isPlaceOccupied;
-        
+        private bool _isPlaceEmpty;
+
+        private void OnEnable()
+        {
+            _isPlaceEmpty = true;
+        }
+
         public void Interact(PlayerInteraction interactor)
         {
             if (interactor == null)
@@ -17,28 +23,25 @@ namespace Game.Scripts.Interactables
                 Debug.LogWarning("PlayerInteraction is null, cannot interact with CoffeeMachine.");
                 return;
             }
-
-            if (interactor.IsHolding && _isPlaceOccupied == false)
+            
+            if (interactor.HeldObject.TryGetComponent(out Cup cup))
             {
-                if (interactor.HeldObject.TryGetComponent(out Cup cup))
-                {
-                    interactor.ReleaseHeldObject();
-                    cup.Drop();
-                    cup.FixPosition();
-                    cup.Grabbed += OnGrabbed;
-                    PlaceOnPosition(cup);
-                }
+                interactor.ReleaseHeldObject();
+                cup.Drop();
+                cup.FixPosition();
+                cup.Grabbed += OnGrabbed;
+                PlaceOnPosition(cup);
             }
         }
 
-        public bool CanInteract()
+        public bool CanInteract(PlayerInteraction interactor)
         {
-            return _isPlaceOccupied == false;
+            return _isPlaceEmpty && interactor.IsHolding;
         }
 
         private void OnGrabbed()
         {
-            _isPlaceOccupied = false;
+            _isPlaceEmpty = true;
         }
 
         private void PlaceOnPosition(Cup cup)
@@ -47,7 +50,7 @@ namespace Game.Scripts.Interactables
             (cupTransform = cup.transform).SetParent(transform);
             cupTransform.position = cupPlace.position;
             cupTransform.rotation = Quaternion.identity;
-            _isPlaceOccupied = true;
+            _isPlaceEmpty = false;
         }
     }
 }
