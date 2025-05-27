@@ -4,6 +4,6 @@ namespace Game.Scripts.Interactables
 {
     public interface IDroppable
     {
-        void Drop(PlayerInteraction playerInteraction);
+        void Drop();
     }
 }

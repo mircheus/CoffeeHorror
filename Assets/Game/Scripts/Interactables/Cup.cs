@@ -8,6 +8,7 @@ namespace Game.Scripts.Interactables
     public class Cup : MonoBehaviour, IInteractable, IDroppable
     {
         private Rigidbody _rigidbody;
+        private bool _isHeld;
 
         private void OnEnable()
         {
@@ -20,32 +21,29 @@ namespace Game.Scripts.Interactables
             }
         }
 
-        public void Interact(PlayerInteraction playerInteraction)
+        public void Interact(PlayerInteraction interactor)
         {
-            if (playerInteraction == null)
+            if (interactor == null)
             {
                 Debug.LogWarning("PlayerInteraction is null, cannot interact with Cup.");
                 return;
             }
 
-            _rigidbody.useGravity = false;
-            _rigidbody.detectCollisions = true;
-            _rigidbody.angularVelocity = Vector3.zero;
-            _rigidbody.linearVelocity = Vector3.zero;
-            playerInteraction.GetCup(this);
+            _isHeld = true;
+            _rigidbody.isKinematic = true;
+            interactor.SetHeldObject(gameObject);
         }
 
         public bool CanInteract()
         {
             return true;
         }
-        
-        public void Drop(PlayerInteraction playerInteraction)
+
+        public void Drop()
         {
-            playerInteraction.DropCup();
-            _rigidbody.useGravity = true;
-            transform.rotation = new Quaternion(0, playerInteraction.transform.rotation.y, 0, 1);
-            // throw new NotImplementedException();
+            _isHeld = false;
+            transform.SetParent(null);
+            _rigidbody.isKinematic = false;
         }
     }
 }

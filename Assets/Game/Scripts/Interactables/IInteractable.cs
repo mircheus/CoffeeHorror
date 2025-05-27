@@ -7,7 +7,7 @@ namespace Game.Prefabs.Interactables
         /// <summary>
         /// Method to be called when the interactable is interacted with.
         /// </summary>
-        void Interact(PlayerInteraction playerInteraction);
+        void Interact(PlayerInteraction interactor);
 
         /// <summary>
         /// Method to check if the interactable can be interacted with.

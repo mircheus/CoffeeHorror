@@ -7,14 +7,14 @@ namespace Game.Scripts.Player
     public class Player : MonoBehaviour
     {
         [SerializeField] private GameObject cameraHead;
-        [SerializeField] private GameObject handlePosition;
+        [SerializeField] private GameObject holdPoint;
 
         private PlayerInteraction _playerInteraction;
         
         public Vector3 CameraHeadForward => cameraHead.transform.forward;
         public Vector3 CameraHeadUp => cameraHead.transform.up;
         public Vector3 CameraHeadPosition => cameraHead.transform.position;
-        public Transform HandleTransform => handlePosition.transform;
+        public Transform HoldPoint => holdPoint.transform;
 
         private void Start()
         {
