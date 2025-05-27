@@ -2,6 +2,7 @@
 using Game.Prefabs.Interactables;
 using Game.Scripts.Player;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Game.Scripts.Interactables
 {
@@ -11,7 +12,7 @@ namespace Game.Scripts.Interactables
         private bool _isHeld;
         private int _originalLayer;
         
-        public event Action Grabbed;
+        public event UnityAction Grabbed;
 
         private void OnEnable()
         {

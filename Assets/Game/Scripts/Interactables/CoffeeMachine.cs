@@ -10,6 +10,7 @@ namespace Game.Scripts.Interactables
         [SerializeField] private Transform cupPlace;
         
         private bool _isPlaceEmpty;
+        private Cup _currentCup;
 
         private void OnEnable()
         {
@@ -27,10 +28,11 @@ namespace Game.Scripts.Interactables
             if (interactor.HeldObject.TryGetComponent(out Cup cup))
             {
                 interactor.ReleaseHeldObject();
-                cup.Drop();
-                cup.FixPosition();
-                cup.Grabbed += OnGrabbed;
-                PlaceOnPosition(cup);
+                _currentCup = cup;
+                _currentCup.Drop();
+                _currentCup.FixPosition();
+                PlaceOnPosition(_currentCup);
+                _currentCup.Grabbed += OnGrabbed;
             }
         }
 
@@ -42,6 +44,8 @@ namespace Game.Scripts.Interactables
         private void OnGrabbed()
         {
             _isPlaceEmpty = true;
+            _currentCup.Grabbed -= OnGrabbed;
+            _currentCup = null;
         }
 
         private void PlaceOnPosition(Cup cup)
