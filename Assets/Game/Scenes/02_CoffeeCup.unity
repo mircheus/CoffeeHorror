@@ -1278,6 +1278,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Coffemachine_Primitive
       objectReference: {fileID: 0}
+    - target: {fileID: 8099021860530790040, guid: 2e95efe4209458b41b24d7e77cdec6f0, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.3765
+      objectReference: {fileID: 0}
     - target: {fileID: 8572003561094274761, guid: 2e95efe4209458b41b24d7e77cdec6f0, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.9932

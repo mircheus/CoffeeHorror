@@ -62,7 +62,7 @@ namespace Game.Scripts.Interactables
             _rigidbody.isKinematic = false;
         }
 
-        public void FixPosition()
+        public void SetKinematicTrue()
         {
             _rigidbody.isKinematic = true;
         }
