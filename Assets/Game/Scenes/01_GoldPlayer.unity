@@ -800,7 +800,7 @@ MonoBehaviour:
     rotateCameraOnly: 0
     invertXAxis: 0
     invertYAxis: 0
-    lookSensitivity: {x: 2, y: 2}
+    lookSensitivity: {x: 0.15, y: 0.15}
     lookDamping: 0
     minimumX: -90
     maximumX: 90
@@ -1044,7 +1044,7 @@ MonoBehaviour:
       strafeTilt: 3
       bobTarget: {fileID: 1836818268}
   sounds:
-    enableAudio: 1
+    enableAudio: 0
     unscaledTime: 0
     audioType: 0
     basedOnHeadBob: 1
@@ -1219,7 +1219,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 9e053f3b319d5964ebc94e9a4c516165, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
