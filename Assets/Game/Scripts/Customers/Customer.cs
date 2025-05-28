@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Game.Prefabs.Interactables;
+using Game.Scripts.Interactables;
 using Game.Scripts.Player;
 using UnityEngine;
 
@@ -36,6 +37,29 @@ namespace Game.Scripts.Customers
             _pathFollower.ReachedWaypoint -= OnReachedWaypoint;
         }
 
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.TryGetComponent(out Cup cup))
+            {
+                switch (cup.CupStatus)
+                {
+                    case CupStatus.Ready:
+                        ToldOrder?.Invoke("Thanks a lot! Have a nice evening!");
+                        break;
+                    
+                    case CupStatus.NotReady:
+                        ToldOrder?.Invoke("Cmon man, it's not ready yet!");
+                        break;
+                    
+                    default:
+                        ToldOrder?.Invoke("What is this? I didn't order this!");
+                        break;
+                }
+                
+                cup.gameObject.SetActive(false);
+            }
+        }
+
         public void Init()
         {
             _pathFollower = new PathFollower(waypoints, transform, speed, isLooping, rotationSpeed);
@@ -61,7 +85,6 @@ namespace Game.Scripts.Customers
 
         public void Interact(PlayerInteraction interactor)
         {
-            Debug.Log("CustomerInteracted");
             interactor.TakeOrderFrom(this);
             ToldOrder?.Invoke(order.OrderName);
         }

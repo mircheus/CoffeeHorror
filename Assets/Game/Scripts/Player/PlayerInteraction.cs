@@ -48,7 +48,6 @@ namespace Game.Scripts.Player
 
         public void TakeOrderFrom(Customer customer)
         {
-            Debug.Log("PlayerInteracted");
         }
 
         public void SetHeldObject(GameObject obj)
@@ -102,9 +101,9 @@ namespace Game.Scripts.Player
             }
         }
 
-        private void Throw(GameObject heldObject) 
+        private void Throw(GameObject heldObject) // TODO: возможно стоит это перенести в чашку через IThrowable
         {
-            Vector3 throwDirection = _player.CameraHeadForward;
+            Vector3 throwDirection = _player.CameraHeadForward; 
             Vector3 force = throwDirection * throwForce;
             Rigidbody rb = heldObject.GetComponent<Rigidbody>();
             rb.linearVelocity = Vector3.zero;
