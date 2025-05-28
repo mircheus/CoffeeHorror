@@ -1,76 +1,70 @@
 ﻿using System;
 using Game.Prefabs.Interactables;
 using Game.Scripts.Player;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
 namespace Game.Scripts.Interactables
 {
-    public class Cup : MonoBehaviour, IInteractable, IDroppable
+    public class Cup : BaseHoldable
     {
-        [SerializeField] protected CoffeeIngredientType ingredientType = CoffeeIngredientType.Cup;
         [SerializeField] private GameObject coffeeMesh;
         [SerializeField] private GameObject waterMesh;
+        [SerializeField] private Transform cupCoverPlace;
         
         private CupStatus _cupStatus = CupStatus.Empty;
-        private Rigidbody _rigidbody;
-        private bool _isHeld;
-        private int _originalLayer;
+        private CupCover _currentCupCover;
+        private bool _isCupCoverPlaced;
         
-        public CoffeeIngredientType IngredientType => ingredientType;
         public CupStatus CupStatus => _cupStatus;
 
         public event UnityAction Grabbed;
 
-        private void OnEnable()
+        protected override void OnEnable()
         {
-            _rigidbody = GetComponent<Rigidbody>();
-            _originalLayer = gameObject.layer;
+            base.OnEnable();
+            _isCupCoverPlaced = false;
             coffeeMesh.SetActive(false);
             waterMesh.SetActive(false);
+        }
 
-            if (_rigidbody == null)
+        public override void Interact(PlayerInteraction interactor)
+        {
+            base.OnEnable();
+            
+            if(interactor.IsHolding && interactor.HeldObject.TryGetComponent(out CupCover cupCover) && !_isCupCoverPlaced)
             {
-                Debug.LogError($"{gameObject.name} requires a Rigidbody component.");
+                interactor.ReleaseHeldObject();
+                _currentCupCover = cupCover;
+                _currentCupCover.Drop();
+                _currentCupCover.SetKinematicTrue();
+                PlaceOnPosition(_currentCupCover);
+            }
+            else if (interactor.IsHolding == false)
+            {
+                _isHeld = true;
+                _rigidbody.isKinematic = true;
+                GameObject cup;
+                (cup = gameObject).layer = LayerMask.NameToLayer(Constants.HeldObjectLayer);
+                interactor.SetHeldObject(cup);
+                Grabbed?.Invoke();
             }
         }
 
-        public void Interact(PlayerInteraction interactor)
+        public override bool CanInteract(PlayerInteraction interactor)
         {
-            if (interactor == null)
-            {
-                Debug.LogWarning("PlayerInteraction is null, cannot interact with Cup.");
-                return;
-            }
-
-            _isHeld = true;
-            _rigidbody.isKinematic = true;
-            gameObject.layer = LayerMask.NameToLayer(Constants.HeldObjectLayer);
-            Grabbed?.Invoke();
-            interactor.SetHeldObject(gameObject);
-        }
-
-        public bool CanInteract(PlayerInteraction interactor)
-        {
-            if (interactor.IsHolding == false)
+            if (interactor.IsHolding && interactor.HeldObject.TryGetComponent(out CupCover cupCover) && !_isCupCoverPlaced)
             {
                 return true;
             }
-
+            
+            if(interactor.IsHolding == false)
+            {
+                return true;
+            }
+            
             return false;
-        }
-
-        public void Drop()
-        {
-            _isHeld = false;
-            gameObject.layer = _originalLayer;
-            transform.SetParent(null);
-            _rigidbody.isKinematic = false;
-        }
-
-        public void SetKinematicTrue()
-        {
-            _rigidbody.isKinematic = true;
         }
 
         public void SetStatus(CoffeePrepare prepareProcess, CupStatus status = CupStatus.NotReady)
@@ -92,8 +86,16 @@ namespace Game.Scripts.Interactables
                     waterMesh.SetActive(false);
                     break;
             }
+        }
 
-            Debug.Log("_cupStatus set to: " + _cupStatus);
+        private void PlaceOnPosition(CupCover cupCover)
+        {
+            cupCover.gameObject.GetComponent<BoxCollider>().enabled = false; // TODO: найти другой способ избежать давления крышки на стаканчик
+            Transform cupCoverTransform;
+            (cupCoverTransform = cupCover.transform).SetParent(cupCoverPlace.transform);
+            cupCoverTransform.position = cupCoverPlace.position;
+            cupCoverTransform.rotation = cupCoverPlace.rotation;
+            _isCupCoverPlaced = true;
         }
     }
 }

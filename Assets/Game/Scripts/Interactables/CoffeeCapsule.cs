@@ -2,7 +2,7 @@
 
 namespace Game.Scripts.Interactables
 {
-    public class CoffeeCapsule : Cup
+    public class CoffeeCapsule : BaseHoldable
     {
     }
 }

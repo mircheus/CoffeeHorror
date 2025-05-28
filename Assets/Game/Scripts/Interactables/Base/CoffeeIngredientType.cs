@@ -3,6 +3,7 @@
     public enum CoffeeIngredientType
     {
         Cup,
-        Capsule
+        Capsule,
+        Cover,
     }
 }
