@@ -10,16 +10,27 @@ namespace Game.Scripts.Interactables
     {
         [SerializeField] private Transform cupPlace;
         [SerializeField] private Transform capsulePlace;
+        [SerializeField] private PrepareButton prepareButton;
+        [SerializeField] private CoffeePrepare coffeePrepare;
         
         private bool _isCupPlaceEmpty;
         private bool _isCapsulePlaceEmpty;
         private Cup _currentCup;
         private CoffeeCapsule _currentCapsule;
+        
+        public bool IsCapsulePlaceEmpty => _isCapsulePlaceEmpty;
+        public Cup CurrentCup => _currentCup;
 
         private void OnEnable()
         {
             _isCupPlaceEmpty = true;
             _isCapsulePlaceEmpty = true;
+            prepareButton.StartPrepare += OnPrepareButtonPressed;
+        }
+
+        private void OnDisable()
+        {
+            prepareButton.StartPrepare -= OnPrepareButtonPressed;
         }
 
         public void Interact(PlayerInteraction interactor)
@@ -52,17 +63,25 @@ namespace Game.Scripts.Interactables
 
         public bool CanInteract(PlayerInteraction interactor)
         {
-            if(interactor.HeldObject.TryGetComponent(out CoffeeCapsule capsule))
+            if (interactor.IsHolding)
             {
-                return _isCapsulePlaceEmpty && interactor.IsHolding;
-            }
+                if(interactor.HeldObject.TryGetComponent(out CoffeeCapsule capsule))
+                {
+                    return _isCapsulePlaceEmpty && interactor.IsHolding;
+                }
             
-            if (interactor.HeldObject.TryGetComponent(out Cup cup))
-            {
-                return _isCupPlaceEmpty && interactor.IsHolding;
+                if (interactor.HeldObject.TryGetComponent(out Cup cup))
+                {
+                    return _isCupPlaceEmpty && interactor.IsHolding;
+                }
             }
             
             return false;
+        }
+
+        public void UseCapsuleIfPersist(CoffeePrepare coffeePrepare)
+        {
+            _isCapsulePlaceEmpty = true;
         }
 
         private void OnGrabbed()
@@ -80,7 +99,7 @@ namespace Game.Scripts.Interactables
             cupTransform.rotation = Quaternion.identity;
             _isCupPlaceEmpty = false;
         }
-        
+
         private void PlaceOnPosition(CoffeeCapsule capsule)
         {
             Transform capsuleTransform;
@@ -88,6 +107,17 @@ namespace Game.Scripts.Interactables
             capsuleTransform.position = capsulePlace.position;
             capsuleTransform.rotation = capsulePlace.rotation;
             _isCapsulePlaceEmpty = false;
+        }
+
+        private void OnPrepareButtonPressed()
+        {
+            coffeePrepare.StartCoffeePouring();
+
+            if (_currentCapsule != null)
+            {
+                Destroy(_currentCapsule.gameObject);
+                _currentCapsule = null;
+            }
         }
     }
 }
