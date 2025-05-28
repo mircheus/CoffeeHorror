@@ -88,6 +88,20 @@ namespace Game.Scripts.Interactables
             }
         }
 
+        public void Throw(Vector3 force)
+        {
+            _isHeld = false;
+
+            transform.SetParent(null);
+            _rigidbody.isKinematic = false;
+
+            gameObject.layer = _originalLayer;
+
+            _rigidbody.linearVelocity = Vector3.zero;
+            _rigidbody.angularVelocity = Vector3.zero;
+            _rigidbody.AddForce(force, ForceMode.Impulse);
+        }
+        
         private void PlaceOnPosition(CupCover cupCover)
         {
             cupCover.gameObject.GetComponent<BoxCollider>().enabled = false; // TODO: найти другой способ избежать давления крышки на стаканчик

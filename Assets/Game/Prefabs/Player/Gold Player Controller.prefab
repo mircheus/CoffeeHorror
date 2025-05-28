@@ -1230,7 +1230,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactAction: {fileID: -687298319886299705, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  throwAction: {fileID: -5050503837781554249, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   rayDistance: 1.5
+  throwForce: 5
   interactLayer:
     serializedVersion: 2
     m_Bits: 64
