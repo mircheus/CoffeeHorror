@@ -1,5 +1,6 @@
 using System;
 using Game.Prefabs.Interactables;
+using Game.Scripts.Customers;
 using Game.Scripts.Interactables;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -35,6 +36,11 @@ namespace Game.Scripts.Player
         {
             _player = player;
             _holdableHandler = new HoldableHandler(_player.HoldPoint);
+        }
+
+        public void TakeOrderFrom(Customer customer)
+        {
+            
         }
 
         public void SetHeldObject(GameObject obj)
