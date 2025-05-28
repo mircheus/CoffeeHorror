@@ -8,7 +8,7 @@ namespace Game.Scripts.UI
     public class DialogueUI : MonoBehaviour
     {
         [Header("References: ")]
-        [SerializeField] private DialogueMediator mediator;
+        [SerializeField] private ViewUIMediator mediator;
         [SerializeField] private CanvasGroup textPanel;
         [SerializeField] private TMP_Text dialogueText;
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Game.Prefabs.Interactables;
 using Game.Scripts.Interactables;
 using Game.Scripts.Player;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Game.Scripts.Customers
@@ -26,6 +27,7 @@ namespace Game.Scripts.Customers
 
         public Order Order => order;
         public event Action<string> ToldOrder;
+        public event Action OrderCompleted;
         
         private void OnEnable()
         {
@@ -44,6 +46,7 @@ namespace Game.Scripts.Customers
                 switch (cup.CupStatus)
                 {
                     case CupStatus.Ready:
+                        OrderCompleted?.Invoke();
                         ToldOrder?.Invoke("Thanks a lot! Have a nice evening!");
                         break;
                     
