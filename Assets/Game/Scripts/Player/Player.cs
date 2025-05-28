@@ -6,6 +6,7 @@ namespace Game.Scripts.Player
     [RequireComponent(typeof(PlayerInteraction))]
     public class Player : MonoBehaviour
     {
+        [Header("References: ")]
         [SerializeField] private GameObject cameraHead;
         [SerializeField] private GameObject holdPoint;
 

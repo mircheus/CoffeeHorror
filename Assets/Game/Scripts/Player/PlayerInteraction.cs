@@ -40,7 +40,7 @@ namespace Game.Scripts.Player
 
         public void TakeOrderFrom(Customer customer)
         {
-            
+            Debug.Log("PlayerInteracted");
         }
 
         public void SetHeldObject(GameObject obj)

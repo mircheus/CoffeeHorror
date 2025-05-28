@@ -9,6 +9,7 @@ namespace Game.Scripts.Customers
     public class Customer : MonoBehaviour, IInteractable
     {
         [Header("References: ")]
+        [SerializeField] private Order order;
         [SerializeField] private List<Transform> waypoints;
         [SerializeField] private Animator animator;
 
@@ -22,7 +23,8 @@ namespace Game.Scripts.Customers
         private PathFollower _pathFollower;
         private bool _isReached = false;
 
-        public event Action ToldOrder;
+        public Order Order => order;
+        public event Action<string> ToldOrder;
         
         private void OnEnable()
         {
@@ -59,7 +61,9 @@ namespace Game.Scripts.Customers
 
         public void Interact(PlayerInteraction interactor)
         {
+            Debug.Log("CustomerInteracted");
             interactor.TakeOrderFrom(this);
+            ToldOrder?.Invoke(order.OrderName);
         }
 
         public bool CanInteract(PlayerInteraction interactor)
