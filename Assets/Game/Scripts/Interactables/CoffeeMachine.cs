@@ -11,11 +11,15 @@ namespace Game.Scripts.Interactables
         [SerializeField] private Transform cupPlace;
         [SerializeField] private Transform capsulePlace;
         [SerializeField] private PrepareButton prepareButton;
+        [SerializeField] private CoffeePrepare coffeePrepare;
         
         private bool _isCupPlaceEmpty;
         private bool _isCapsulePlaceEmpty;
         private Cup _currentCup;
         private CoffeeCapsule _currentCapsule;
+        
+        public bool IsCapsulePlaceEmpty => _isCapsulePlaceEmpty;
+        public Cup CurrentCup => _currentCup;
 
         private void OnEnable()
         {
@@ -75,6 +79,11 @@ namespace Game.Scripts.Interactables
             return false;
         }
 
+        public void UseCapsuleIfPersist(CoffeePrepare coffeePrepare)
+        {
+            _isCapsulePlaceEmpty = true;
+        }
+
         private void OnGrabbed()
         {
             _isCupPlaceEmpty = true;
@@ -102,7 +111,13 @@ namespace Game.Scripts.Interactables
 
         private void OnPrepareButtonPressed()
         {
-            Debug.Log("PrepareButton pressed. Starting coffee preparation...");
+            coffeePrepare.StartCoffeePouring();
+
+            if (_currentCapsule != null)
+            {
+                Destroy(_currentCapsule.gameObject);
+                _currentCapsule = null;
+            }
         }
     }
 }
