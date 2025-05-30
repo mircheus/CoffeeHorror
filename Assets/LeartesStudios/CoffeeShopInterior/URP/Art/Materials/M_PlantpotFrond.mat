@@ -46,7 +46,7 @@ Material:
   - RayTracingPrepass
   - MOTIONVECTORS
   - DepthOnly
-  m_LockedProperties: 
+  m_LockedProperties: _WorkflowMode
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
