@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Game.Prefabs.Interactables;
+using Game.Scripts.Horror;
 using Game.Scripts.Interactables;
 using Game.Scripts.Player;
 using UnityEngine;
@@ -94,6 +95,12 @@ namespace Game.Scripts.Customers
         {
             interactor.TakeOrderFrom(this);
             ToldOrder?.Invoke(order.OrderName);
+        }
+
+        public void HorrorAction(HorrorNpc horrorNpc)
+        {
+            _isReached = true;
+            animator.SetTrigger(_reached);
         }
 
         public bool CanInteract(PlayerInteraction interactor)

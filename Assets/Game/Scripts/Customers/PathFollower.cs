@@ -25,7 +25,7 @@ namespace Game.Scripts.Customers
             _currentWaypointIndex = 0;
         }
 
-        public void MoveToWaypoint(bool isReverse = false)
+        public void MoveToWaypoint()
         {
             Vector3 npcPos = new Vector3(_transform.position.x, 0, _transform.position.z);
             Vector3 targetPos = new Vector3(_waypoints[_currentWaypointIndex].position.x, 0, _waypoints[_currentWaypointIndex].position.z);
