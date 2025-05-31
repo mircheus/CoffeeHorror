@@ -67,6 +67,15 @@ namespace Game.Scripts.Horror
                 .SetLoops(-1, LoopType.Yoyo)
                 .SetEase(_easeType);
         }
+        
+        public void ResetToNormalLight()
+        {
+            // Kill the pulse tween to stop pulsing
+            _pulseTween?.Kill();
+            _colorTween?.Kill();
+            _lightComponent.intensity = _initialColor.a;
+            _lightComponent.color = _initialColor;
+        }
 
         private void OnDisable()
         {

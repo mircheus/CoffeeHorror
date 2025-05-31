@@ -1,4 +1,6 @@
-﻿using Game.Scripts.Customers;
+﻿using Game.Prefabs.Interactables;
+using Game.Scripts.Customers;
+using Game.Scripts.Player;
 using UnityEngine;
 
 namespace Game.Scripts.Horror
@@ -11,7 +13,8 @@ namespace Game.Scripts.Horror
 
         public void TriggerHorrorAction()
         {
-            customer.HorrorAction(this);
+            customer.StopMoving(this);
+            customer.enabled = false;
         }
     }
 }

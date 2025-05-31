@@ -97,12 +97,6 @@ namespace Game.Scripts.Customers
             ToldOrder?.Invoke(order.OrderName);
         }
 
-        public void HorrorAction(HorrorNpc horrorNpc)
-        {
-            _isReached = true;
-            animator.SetTrigger(_reached);
-        }
-
         public bool CanInteract(PlayerInteraction interactor)
         {
             if (_isReached == false)
@@ -111,6 +105,12 @@ namespace Game.Scripts.Customers
             }
 
             return true;
+        }
+
+        public void StopMoving(HorrorNpc horrorNpc)
+        {
+            _isReached = true;
+            animator.SetTrigger(_reached);
         }
 
         private void OnReachedWaypoint()

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using Hertzole.GoldPlayer;
 using UnityEngine;
 
 namespace Game.Scripts.Player
@@ -11,6 +13,7 @@ namespace Game.Scripts.Player
         [SerializeField] private GameObject holdPoint;
 
         private PlayerInteraction _playerInteraction;
+        private GoldPlayerController _goldPlayerController;
         
         public Vector3 CameraHeadForward => cameraHead.transform.forward;
         public Vector3 CameraHeadUp => cameraHead.transform.up;
@@ -20,6 +23,7 @@ namespace Game.Scripts.Player
         private void Start()
         {
             InitPlayerInteraction();
+            _goldPlayerController = GetComponent<GoldPlayerController>();
         }
 
         private void InitPlayerInteraction()
@@ -37,6 +41,20 @@ namespace Game.Scripts.Player
                     Debug.LogError("PlayerInteraction component is missing on Player.");
                 }
             }
+        }
+
+        public void TeleportToInitPosition()
+        {
+            _goldPlayerController.enabled = false;
+            transform.position = new Vector3(-0.57f, transform.position.y, -1.55f); // Replace with actual initial position
+            transform.rotation = Quaternion.LookRotation(Vector3.zero);
+            StartCoroutine(ActivateControllerWithDelay(.5f));
+        }
+        
+        private IEnumerator ActivateControllerWithDelay(float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            _goldPlayerController.enabled = true;
         }
     }
 }

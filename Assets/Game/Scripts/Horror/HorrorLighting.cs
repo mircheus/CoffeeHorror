@@ -6,11 +6,12 @@ namespace Game.Scripts.Horror
 {
     public class HorrorLighting : MonoBehaviour
     {
-        [Header("References: ")]
-        [SerializeField] private PulsingLight[] lights;
-        
-        [Header("Settings: ")]
-        [SerializeField] private bool randomized = false; // If true, min/max intensity and duration will be randomized
+        [Header("References: ")] [SerializeField]
+        private PulsingLight[] lights;
+
+        [Header("Settings: ")] [SerializeField]
+        private bool randomized = false; // If true, min/max intensity and duration will be randomized
+
         [SerializeField] private float minIntensity = 0f;
         [SerializeField] private float maxIntensity = 2f;
         [SerializeField] private float duration = 1f;
@@ -26,22 +27,20 @@ namespace Game.Scripts.Horror
             }
         }
 
-        private void OnEnable()
-        {
-            // foreach (var light in lights)
-            // {
-            //     light.Init(randomized, minIntensity, maxIntensity, duration, easeType);
-            // }
-            //
-            // StartPulsingLight();
-        }
-
         public void StartPulsingLight()
         {
             foreach (var light in lights)
             {
                 light.StartPulsing();
                 light.StartColorChange(targetColor, colorChangeDuration);
+            }
+        }
+
+        public void StopPulsingLight()
+        {
+            foreach (var light in lights)
+            {
+                light.ResetToNormalLight();
             }
         }
     }
