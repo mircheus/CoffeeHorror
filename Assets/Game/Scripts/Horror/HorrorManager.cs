@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using DG.Tweening;
 using UnityEngine;
 
 namespace Game.Scripts.Horror
@@ -10,6 +11,8 @@ namespace Game.Scripts.Horror
         [SerializeField] private HorrorTrigger horrorTrigger;
         [SerializeField] private HorrorNpc horrorNpc;
         [SerializeField] private HorrorLighting horrorLighting;
+        [SerializeField] private LookTrigger lookTrigger;
+        [SerializeField] private Transform monster;
         
         [Header("References: ")]
         [SerializeField] private Player.Player player;
@@ -46,6 +49,16 @@ namespace Game.Scripts.Horror
             TeleportToInitPosition();
             horrorLighting.StopPulsingLight();
             horrorNpc.Customer.ToldOrder -= OnCustomerToldOrder;
+            lookTrigger.enabled = true;
+            lookTrigger.LookTriggered += OnLookTriggered;
+        }
+
+        private void OnLookTriggered()
+        {
+            var lookToPlayer = Quaternion.LookRotation(player.transform.position - monster.transform.position, Vector3.up);
+            monster.transform.rotation = new Quaternion(monster.transform.rotation.x, lookToPlayer.y, monster.transform.rotation.z, monster.transform.rotation.w);
+            var newPos = new Vector3(player.transform.position.x, transform.position.y, player.transform.position.z);
+            monster.DOMove(newPos, 0.4f);
         }
 
         private void TeleportToInitPosition()
