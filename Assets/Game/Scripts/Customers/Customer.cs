@@ -1,9 +1,9 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Game.Prefabs.Interactables;
 using Game.Scripts.Interactables;
 using Game.Scripts.Player;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Game.Scripts.Customers
@@ -13,17 +13,21 @@ namespace Game.Scripts.Customers
         [Header("References: ")]
         [SerializeField] private Order order;
         [SerializeField] private List<Transform> waypoints;
+        [SerializeField] private List<Transform> reverseWaypoints;
         [SerializeField] private Animator animator;
 
         [Header("Settings: ")]
         [SerializeField] private float speed;
         [SerializeField] private bool isLooping;
         [SerializeField] private float rotationSpeed = 120f;
+        [SerializeField] private float delayBeforeFollowing = 2f;
         
         private int _currentWaypointIndex = 0;
         private int _reached = Animator.StringToHash("Reached");
+        private int _following = Animator.StringToHash("Following");
         private PathFollower _pathFollower;
         private bool _isReached = false;
+        private Coroutine _startFollowingCoroutine;
 
         public Order Order => order;
         public event Action<string> ToldOrder;
@@ -48,6 +52,12 @@ namespace Game.Scripts.Customers
                     case CupStatus.Ready:
                         OrderCompleted?.Invoke();
                         ToldOrder?.Invoke("Thanks a lot! Have a nice evening!");
+                        if (_startFollowingCoroutine != null)
+                        {
+                            StopCoroutine(_startFollowingCoroutine);
+                        }
+                        
+                        _startFollowingCoroutine = StartCoroutine(StartFollowingWithDelay(delayBeforeFollowing));
                         break;
                     
                     case CupStatus.NotReady:
@@ -67,12 +77,6 @@ namespace Game.Scripts.Customers
         {
             _pathFollower = new PathFollower(waypoints, transform, speed, isLooping, rotationSpeed);
             _pathFollower.ReachedWaypoint += OnReachedWaypoint;
-        }
-
-        private void OnReachedWaypoint()
-        {
-            _isReached = true;
-            animator.SetTrigger(_reached);
         }
 
         private void Update()
@@ -100,6 +104,20 @@ namespace Game.Scripts.Customers
             }
 
             return true;
+        }
+
+        private void OnReachedWaypoint()
+        {
+            _isReached = true;
+            animator.SetTrigger(_reached);
+        }
+
+        private IEnumerator StartFollowingWithDelay(float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            animator.SetTrigger(_following);
+            _pathFollower.SetNewWaypoints(reverseWaypoints);
+            _isReached = false;
         }
     }
 }
