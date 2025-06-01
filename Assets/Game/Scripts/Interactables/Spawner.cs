@@ -7,6 +7,9 @@ namespace Game.Scripts.Interactables
     public class Spawner : MonoBehaviour, IInteractable
     {
         [SerializeField] private GameObject prefabToSpawn;
+        [SerializeField] private string interactionText = "Spawn Object";
+        
+        public string InteractionText => interactionText;
 
         public void Interact(PlayerInteraction interactor)
         {

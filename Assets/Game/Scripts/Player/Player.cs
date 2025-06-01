@@ -13,12 +13,14 @@ namespace Game.Scripts.Player
         [SerializeField] private GameObject holdPoint;
 
         private PlayerInteraction _playerInteraction;
+        
         private GoldPlayerController _goldPlayerController;
         
         public Vector3 CameraHeadForward => cameraHead.transform.forward;
         public Vector3 CameraHeadUp => cameraHead.transform.up;
         public Vector3 CameraHeadPosition => cameraHead.transform.position;
         public Transform HoldPoint => holdPoint.transform;
+        public PlayerInteraction PlayerInteraction => _playerInteraction;
 
         private void Start()
         {

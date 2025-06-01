@@ -23,7 +23,8 @@ namespace Game.Scripts.Player
 
         public bool IsHolding => _holdableHandler.IsHolding;
         public GameObject HeldObject => _holdableHandler.HeldObject;
-        
+        public float RayDistance => rayDistance;
+
         private void OnEnable()
         {
             interactAction.action.Enable();

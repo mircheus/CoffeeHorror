@@ -1,4 +1,5 @@
 ﻿using System;
+using Game.Scripts.UI;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -9,8 +10,17 @@ namespace Game.Scripts.Horror
     {
         [SerializeField] private Transform target;
         [SerializeField] private float dotProductThreshold = 0.5f;
+        [SerializeField] private Fader fader;
 
         public event UnityAction LookTriggered;
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if(other.TryGetComponent(out Player.Player player))
+            {
+                fader.FadeOut(.5f);
+            }
+        }
 
         private void Update()
         {

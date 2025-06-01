@@ -4,6 +4,7 @@ namespace Game.Prefabs.Interactables
 {
     public interface IInteractable
     {
+        public string InteractionText { get; }
         /// <summary>
         /// Method to be called when the interactable is interacted with.
         /// </summary>
