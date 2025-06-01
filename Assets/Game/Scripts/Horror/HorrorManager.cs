@@ -13,6 +13,7 @@ namespace Game.Scripts.Horror
         [SerializeField] private HorrorLighting horrorLighting;
         [SerializeField] private LookTrigger lookTrigger;
         [SerializeField] private Transform monster;
+        [SerializeField] private Transform monsterInitPosition;
         
         [Header("References: ")]
         [SerializeField] private Player.Player player;
@@ -24,13 +25,21 @@ namespace Game.Scripts.Horror
             horrorTrigger.enabled = false;
             horrorNpc.Customer.OrderCompleted += OnOrderCompleted;
             horrorTrigger.HorrorTriggered += OnHorrorTriggered;
+            lookTrigger.LookTriggered += OnLookTriggered;
         }
         
         private void OnDisable()
         {
             horrorNpc.Customer.OrderCompleted -= OnOrderCompleted;
             horrorTrigger.HorrorTriggered -= OnHorrorTriggered;
-            
+        }
+
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.T))
+            {
+                OnLookTriggered();
+            }
         }
 
         private void OnHorrorTriggered()
@@ -50,15 +59,22 @@ namespace Game.Scripts.Horror
             horrorLighting.StopPulsingLight();
             horrorNpc.Customer.ToldOrder -= OnCustomerToldOrder;
             lookTrigger.enabled = true;
-            lookTrigger.LookTriggered += OnLookTriggered;
+            
         }
 
         private void OnLookTriggered()
         {
+            Debug.Log("OnLookTriggered TEST");
             var lookToPlayer = Quaternion.LookRotation(player.transform.position - monster.transform.position, Vector3.up);
             monster.transform.rotation = new Quaternion(monster.transform.rotation.x, lookToPlayer.y, monster.transform.rotation.z, monster.transform.rotation.w);
-            var newPos = new Vector3(player.transform.position.x, transform.position.y, player.transform.position.z);
-            monster.DOMove(newPos, 0.4f);
+            var newPos = new Vector3(player.transform.position.x, 1, player.transform.position.z);
+            monster.DOMove(newPos, 0.5f);
+            // lookTrigger.LookTriggered -= OnLookTriggered;
+        }
+
+        private void MonsterReset()
+        {
+            monster.position = monsterInitPosition.position;
         }
 
         private void TeleportToInitPosition()
