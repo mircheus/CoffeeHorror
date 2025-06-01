@@ -7,10 +7,12 @@ namespace Game.Scripts.Interactables
     public abstract class BaseHoldable : MonoBehaviour, IInteractable, IDroppable
     {
         [SerializeField] protected CoffeeIngredientType ingredientType = CoffeeIngredientType.Cup;
+        [SerializeField] protected string interactionText = "Interact LMB";
         
         protected bool _isHeld;
         protected Rigidbody _rigidbody;
         protected int _originalLayer;
+        public string InteractionText => interactionText;
         
         public CoffeeIngredientType IngredientType => ingredientType;
         
@@ -24,6 +26,8 @@ namespace Game.Scripts.Interactables
                 Debug.LogError($"{gameObject.name} requires a Rigidbody component.");
             }
         }
+
+        
 
         public virtual void Interact(PlayerInteraction interactor)
         {

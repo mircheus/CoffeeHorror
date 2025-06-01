@@ -20,6 +20,7 @@ namespace Game.Scripts.Interactables
         
         public bool IsCapsulePlaceEmpty => _isCapsulePlaceEmpty;
         public Cup CurrentCup => _currentCup;
+        public string InteractionText { get; }
 
         private void OnEnable()
         {
@@ -32,6 +33,7 @@ namespace Game.Scripts.Interactables
         {
             prepareButton.StartPrepare -= OnPrepareButtonPressed;
         }
+
 
         public void Interact(PlayerInteraction interactor)
         {

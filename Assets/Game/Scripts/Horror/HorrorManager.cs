@@ -76,7 +76,6 @@ namespace Game.Scripts.Horror
             var lookToPlayer = Quaternion.LookRotation(player.transform.position - monster.transform.position, Vector3.up);
             monster.transform.rotation = new Quaternion(monster.transform.rotation.x, lookToPlayer.y, monster.transform.rotation.z, monster.transform.rotation.w);
             var newPos = new Vector3(player.transform.position.x, 1, player.transform.position.z);
-            EnableVhsEffect();
             screamerAudio.Play();
             monster.DOMove(newPos, 0.5f);
             lookTrigger.enabled = false;

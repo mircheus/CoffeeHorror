@@ -22,6 +22,7 @@ namespace Game.Scripts.Customers
         [SerializeField] private bool isLooping;
         [SerializeField] private float rotationSpeed = 120f;
         [SerializeField] private float delayBeforeFollowing = 2f;
+        [SerializeField] private string interactionText = "Interact";
         
         private int _currentWaypointIndex = 0;
         private int _reached = Animator.StringToHash("Reached");
@@ -33,6 +34,7 @@ namespace Game.Scripts.Customers
         public Order Order => order;
         public event Action<string> ToldOrder;
         public event Action OrderCompleted;
+        public string InteractionText => interactionText;
         
         private void OnEnable()
         {
