@@ -37,7 +37,7 @@ namespace Game.Scripts.UI
             {
                 currentTarget = hit.collider.GetComponent<IInteractable>();
 
-                if (currentTarget != null)
+                if (currentTarget != null && currentTarget.CanInteract(player.PlayerInteraction))
                 {
                     if (!showText.enabled)
                     {
