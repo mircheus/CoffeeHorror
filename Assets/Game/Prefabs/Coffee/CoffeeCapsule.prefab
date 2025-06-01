@@ -98,7 +98,7 @@ GameObject:
   - component: {fileID: 2734270903036346668}
   - component: {fileID: 4276790906234105774}
   - component: {fileID: 5608126653057817485}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: CoffeeCapsule
   m_TagString: Untagged
   m_Icon: {fileID: 0}
