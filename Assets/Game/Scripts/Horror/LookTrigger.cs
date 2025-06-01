@@ -12,11 +12,6 @@ namespace Game.Scripts.Horror
 
         public event UnityAction LookTriggered;
 
-        private void Start()
-        {
-            enabled = false;
-        }
-
         private void Update()
         {
             CheckLookTrigger();
@@ -35,8 +30,6 @@ namespace Game.Scripts.Horror
             if (dotProduct >= dotProductThreshold)
             {
                 LookTriggered?.Invoke();
-                Debug.Log("LOOOOOK");
-                enabled = false;
             }
         }
 

@@ -34,14 +34,6 @@ namespace Game.Scripts.Horror
             horrorTrigger.HorrorTriggered -= OnHorrorTriggered;
         }
 
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.T))
-            {
-                OnLookTriggered();
-            }
-        }
-
         private void OnHorrorTriggered()
         {
             horrorLighting.StartPulsingLight();
@@ -58,24 +50,20 @@ namespace Game.Scripts.Horror
             TeleportToInitPosition();
             horrorLighting.StopPulsingLight();
             horrorNpc.Customer.ToldOrder -= OnCustomerToldOrder;
+            monster.gameObject.SetActive(true);
             lookTrigger.enabled = true;
-            
         }
 
         private void OnLookTriggered()
         {
-            Debug.Log("OnLookTriggered TEST");
             var lookToPlayer = Quaternion.LookRotation(player.transform.position - monster.transform.position, Vector3.up);
             monster.transform.rotation = new Quaternion(monster.transform.rotation.x, lookToPlayer.y, monster.transform.rotation.z, monster.transform.rotation.w);
             var newPos = new Vector3(player.transform.position.x, 1, player.transform.position.z);
             monster.DOMove(newPos, 0.5f);
-            // lookTrigger.LookTriggered -= OnLookTriggered;
+            lookTrigger.enabled = false;
+            lookTrigger.LookTriggered -= OnLookTriggered;
         }
 
-        private void MonsterReset()
-        {
-            monster.position = monsterInitPosition.position;
-        }
 
         private void TeleportToInitPosition()
         {
