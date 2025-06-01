@@ -64,6 +64,7 @@ namespace Game.Scripts.Horror
         private void OnCustomerToldOrder(string obj)
         {
             TeleportToInitPosition();
+            DisableVhsEffect();
             horrorLighting.StopPulsingLight();
             spookyAudio.gameObject.SetActive(false);
             horrorNpc.Customer.ToldOrder -= OnCustomerToldOrder;
@@ -86,7 +87,6 @@ namespace Game.Scripts.Horror
         {
             if (player != null)
             {
-                DisableVhsEffect();
                 player.TeleportToInitPosition();
                 // player.transform.rotation = playerInitialPosition.rotation;
                 horrorNpc.Customer.transform.position = npcInitialPosition.position;
