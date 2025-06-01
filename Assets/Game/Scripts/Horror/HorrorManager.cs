@@ -17,6 +17,8 @@ namespace Game.Scripts.Horror
         [SerializeField] private LookTrigger lookTrigger;
         [SerializeField] private Transform monster;
         [SerializeField] private Transform monsterInitPosition;
+        [SerializeField] private AudioSource screamerAudio;
+        [SerializeField] private AudioSource spookyAudio;
 
         [Header("VHS Settings:")] 
         [SerializeField] private Volume vhsVolume;
@@ -49,6 +51,7 @@ namespace Game.Scripts.Horror
         private void OnHorrorTriggered()
         {
             horrorLighting.StartPulsingLight();
+            EnableSpookyAudio();
             horrorNpc.Customer.ToldOrder += OnCustomerToldOrder;
             EnableVhsEffect();
         }
@@ -62,6 +65,7 @@ namespace Game.Scripts.Horror
         {
             TeleportToInitPosition();
             horrorLighting.StopPulsingLight();
+            spookyAudio.gameObject.SetActive(false);
             horrorNpc.Customer.ToldOrder -= OnCustomerToldOrder;
             monster.gameObject.SetActive(true);
             lookTrigger.enabled = true;
@@ -72,6 +76,8 @@ namespace Game.Scripts.Horror
             var lookToPlayer = Quaternion.LookRotation(player.transform.position - monster.transform.position, Vector3.up);
             monster.transform.rotation = new Quaternion(monster.transform.rotation.x, lookToPlayer.y, monster.transform.rotation.z, monster.transform.rotation.w);
             var newPos = new Vector3(player.transform.position.x, 1, player.transform.position.z);
+            EnableVhsEffect();
+            screamerAudio.Play();
             monster.DOMove(newPos, 0.5f);
             lookTrigger.enabled = false;
             lookTrigger.LookTriggered -= OnLookTriggered;
@@ -97,9 +103,24 @@ namespace Game.Scripts.Horror
         private void EnableVhsEffect()
         {
             // vhsVolume.gameObject.SetActive(true);
-            _vhsVolComponent._weight.value = 0.9f;
-            _vhsVolComponent._flickering.value = 0.6f;
-            _vhsVolComponent._rocking.value = 0.8f;
+            DOTween.To(() =>_vhsVolComponent._weight.value,
+                x => _vhsVolComponent._weight.value = x,
+                0.9f,
+                10f);
+            
+            DOTween.To(() =>_vhsVolComponent._flickering.value,
+                x => _vhsVolComponent._flickering.value = x,
+                0.6f,
+                10f);
+            
+            DOTween.To(() =>_vhsVolComponent._rocking.value,
+                x => _vhsVolComponent._rocking.value = x,
+                0.8f,
+                10f);
+            
+            // _vhsVolComponent._weight.value = 0.9f;
+            // _vhsVolComponent._flickering.value = 0.6f;
+            // _vhsVolComponent._rocking.value = 0.8f;
             // Debug.Log("vhs == null: " + (vhs == null));
             // vhs._weight.value = 1f;
         }
@@ -120,6 +141,13 @@ namespace Game.Scripts.Horror
             _defaultFlickering = vhsVol._flickering.value;
             _defaultRocking = vhsVol._rocking.value;
             return vhsVol;
+        }
+
+        private void EnableSpookyAudio()
+        {
+            spookyAudio.volume = 0;
+            spookyAudio.gameObject.SetActive(true);
+            spookyAudio.DOFade(0.6f, 10f);
         }
     }
 }
