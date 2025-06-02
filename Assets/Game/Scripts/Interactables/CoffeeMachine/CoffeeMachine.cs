@@ -49,6 +49,7 @@ namespace Game.Scripts.Interactables
                 _currentCapsule = capsule;
                 _currentCapsule.Drop();
                 _currentCapsule.SetKinematicTrue();
+                _currentCapsule.SetInteractable(this, false);
                 PlaceOnPosition(_currentCapsule);
             }
             

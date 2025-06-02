@@ -66,7 +66,7 @@ namespace Game.Scripts.Customers
                     case CupStatus.NotReady:
                         ToldOrder?.Invoke("Cmon man, it's not ready yet!");
                         break;
-                    
+
                     default:
                         ToldOrder?.Invoke("What is this? I didn't order this!");
                         break;
