@@ -4,7 +4,7 @@
     {
         Empty,
         NotReady, 
-        Water, 
+        Water,
         Ready
     }
 }

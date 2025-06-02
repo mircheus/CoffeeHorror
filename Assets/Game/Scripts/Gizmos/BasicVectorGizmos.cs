@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEngine;
 
 namespace Game.Scripts.Player
@@ -21,31 +20,31 @@ namespace Game.Scripts.Player
         [SerializeField] private Color upColor = Color.green;
         [SerializeField] private float upLength = 2f;
         
-        private void OnDrawGizmos()
-        {
-            DrawBasicVectors();
-        }
-
-        private void DrawBasicVectors()
-        {
-            if (showForward)
-            {
-                Handles.color = forwardColor;
-                Handles.DrawLine(transform.position, transform.position + transform.forward * forwardLength, 6f);
-            }
-
-            if (showRight)
-            {
-                Handles.color = rightColor;
-                Handles.DrawLine(transform.position, transform.position + transform.right * rightLength, 6f);
-            }
-
-
-            if (showUp)
-            {
-                Handles.color = upColor;
-                Handles.DrawLine(transform.position, transform.position + transform.up * upLength, 6f);
-            }
-        }
+        // private void OnDrawGizmos()
+        // {
+        //     DrawBasicVectors();
+        // }
+        //
+        // private void DrawBasicVectors()
+        // {
+        //     if (showForward)
+        //     {
+        //         Handles.color = forwardColor;
+        //         Handles.DrawLine(transform.position, transform.position + transform.forward * forwardLength, 6f);
+        //     }
+        //
+        //     if (showRight)
+        //     {
+        //         Handles.color = rightColor;
+        //         Handles.DrawLine(transform.position, transform.position + transform.right * rightLength, 6f);
+        //     }
+        //
+        //
+        //     if (showUp)
+        //     {
+        //         Handles.color = upColor;
+        //         Handles.DrawLine(transform.position, transform.position + transform.up * upLength, 6f);
+        //     }
+        // }
     }
 }
